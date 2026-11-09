@@ -19,6 +19,7 @@ class BookmarkResponse(BaseModel):
     stars: int
     created_at: str
 
+@router.post("", status_code=status.HTTP_201_CREATED, include_in_schema=False)
 @router.post("/", status_code=status.HTTP_201_CREATED, summary="Create a new repository bookmark")
 def create_bookmark(payload: BookmarkCreate):
     """
@@ -44,6 +45,7 @@ def create_bookmark(payload: BookmarkCreate):
             detail=f"Failed to save bookmark to database: {str(e)}"
         )
 
+@router.get("", status_code=status.HTTP_200_OK, include_in_schema=False)
 @router.get("/", status_code=status.HTTP_200_OK, summary="List all bookmarked repositories")
 def get_bookmarks(limit: int = 50, offset: int = 0):
     """
@@ -79,3 +81,4 @@ def delete_bookmark(bookmark_id: int):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to delete bookmark: {str(e)}"
         )
+

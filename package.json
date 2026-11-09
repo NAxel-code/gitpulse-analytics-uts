@@ -1,0 +1,12 @@
+{
+  "name": "gitpulse-analytics",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install": "npm --prefix frontend install",
+    "build": "npm --prefix frontend run build",
+    "vercel-build": "npm --prefix frontend run vercel-build",
+    "dev": "npm --prefix frontend run dev",
+    "start": "npm --prefix frontend run start"
+  }
+}

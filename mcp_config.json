@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "gitpulse": {
+      "command": "python",
+      "args": ["backend/run_mcp.py", "--transport=stdio"],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}

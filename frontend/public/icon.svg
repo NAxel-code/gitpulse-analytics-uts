@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <!-- Architectural Dark Container -->
+  <rect x="4" y="4" width="120" height="120" rx="26" fill="#080808" stroke="#27272a" stroke-width="2.5"/>
+  <rect x="12" y="12" width="104" height="104" rx="20" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+
+  <!-- Corner registration tick marks (Awwwards Swiss Architectural) -->
+  <path d="M 18,24 L 24,24 L 24,18" stroke="#71717a" stroke-width="1.2" fill="none" opacity="0.6"/>
+  <path d="M 110,24 L 104,24 L 104,18" stroke="#71717a" stroke-width="1.2" fill="none" opacity="0.6"/>
+  <path d="M 18,104 L 24,104 L 24,110" stroke="#71717a" stroke-width="1.2" fill="none" opacity="0.6"/>
+  <path d="M 110,104 L 104,104 L 104,110" stroke="#71717a" stroke-width="1.2" fill="none" opacity="0.6"/>
+
+  <!-- Git Commit Origin Node -->
+  <circle cx="28" cy="64" r="7.5" fill="#ffffff"/>
+  <circle cx="28" cy="64" r="3.5" fill="#080808"/>
+
+  <!-- Git Commit Destination Node -->
+  <circle cx="100" cy="64" r="7.5" fill="#ffffff"/>
+  <circle cx="100" cy="64" r="3.5" fill="#080808"/>
+
+  <!-- Telemetry Laser Pulse Vector -->
+  <path d="M 35.5 64 L 49.5 64 L 60.5 30 L 73.5 98 L 84.5 64 L 92.5 64" 
+        stroke="#ffffff" 
+        stroke-width="5.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+        fill="none"/>
+
+  <!-- Apex Peak Metric Anchor -->
+  <circle cx="60.5" cy="30" r="3.5" fill="#10b981"/>
+</svg>

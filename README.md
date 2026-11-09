@@ -199,3 +199,30 @@ curl -i http://localhost:8000/api/v1/bookmarks
 4. Panggil kembali `GET /api/v1/bookmarks`. **Hasil:** Data tetap tersimpan utuh karena data disimpan di named volume `gitpulse_postgres_data`.
 5. **Perbedaan dengan `docker compose down -v`:**
    Perintah `docker compose down` hanya menghapus container dan network virtual tanpa menyentuh data volume. Sedangkan `docker compose down -v` (*volume flag*) akan secara paksa menghapus seluruh named volume fisik di host, sehingga data database akan terhapus bersih.
+
+
+---
+
+## 🤖 7. AI Usage & Academic Integrity Declaration (Partial AI - Max 50%)
+
+Sesuai ketentuan pelaksanaan ujian (Petunjuk No. 5), penggunaan kecerdasan buatan (AI) pada repositori ini dideklarasikan secara transparan dan terukur sebagai berikut:
+
+### a. Konteks Projek & Orisinalitas Kode Dasar
+Repositori ini merupakan pengembangan lanjutan (*specialized multi-tier adaptation*) dari projek analitik yang telah dibangun sebelumnya oleh saya pada repositori:
+👉 [https://github.com/NAxel-code/gitpulse-analytics](https://github.com/NAxel-code/gitpulse-analytics)
+
+Arsitektur logika bisnis, antarmuka visual (Awwwards-style UI, layout bento grid, kalkulasi metrik DORA, dan komponen visualisasi Recharts) merupakan **hasil karya mandiri saya** yang telah dirancang sebelumnya. Repositori baru ini diinisialisasi secara khusus untuk memenuhi standar teknis Ujian Tengah Semester (UTS) mata kuliah **COMP6991031 – Cloud Services**.
+
+### b. Batasan & Tahapan Penggunaan AI (Partial AI ≤ 50%)
+Kecerdasan Buatan (Google Gemini / Antigravity AI Assistant) digunakan dalam porsi terbatas dan terarah untuk membantu proses refaktorisasi arsitektur dan penyesuaian infrastruktur container:
+1. **Migrasi Database Relasional (DuckDB ke PostgreSQL):** Membantu mengalihkan arsitektur database dari DuckDB (*embedded in-process*) ke PostgreSQL 16 (*multi-tier container*), mencakup pembuatan skema tabel relasional, modul koneksi driver `psycopg2`, serta implementasi endpoint RESTful persisten (`POST /api/v1/bookmarks/` dan `GET /api/v1/bookmarks/`).
+2. **Orkestrasi Multi-Tier Docker Compose:** Membantu penyusunan dan perancangan konfigurasi orkestrasi `docker-compose.yml` agar memenuhi standar kriteria cloud services: isolasi jaringan virtual (*user-defined bridge network*), ketergantungan urutan inisialisasi berbasis *healthcheck* (`depends_on: service_healthy`), mekanisme persistensi data fisik (*named volume*), dan pemisahan profil manajemen utilitas (`profiles: ["tools"]`).
+3. **Penyusunan Dokumentasi & Rangkuman Analisis Laporan:** Membantu mengumpulkan informasi terkait laporan yang diminta serta bantuan menyusun dan merapihkan `README.md` teknis, mencakup panduan pengujian endpoint, pembuktian persistensi volume, dan kerangka analisis komparasi layanan cloud.
+
+### c. Contoh Prompt Utama yang Digunakan
+* *"Bagaimana cara mengubah arsitektur penyimpanan database dari DuckDB embedded ke database server PostgreSQL container menggunakan driver psycopg2 dan FastAPI?"*
+* *"Tuliskan konfigurasi docker-compose.yml untuk menghubungkan frontend Next.js, backend FastAPI, dan PostgreSQL 16 dengan user-defined bridge network, healthcheck pg_isready, dan named volume persistence."*
+* *"Bantu kumpulkan informasi teknis yang diminta untuk laporan ujian dan susun dokumentasi README.md yang rapi, mencakup instruksi pengujian curl, verifikasi named volume, dan format markdown standar."*
+
+### d. Pernyataan Integritas Akademik
+Seluruh kode konfigurasi Docker, arsitektur jaringan virtual, endpoint API, skrip database, serta pengujian fungsionalitas di localhost telah dipahami secara utuh, diuji, dan mampu dipertanggungjawabkan serta dipresentasikan secara langsung oleh saya.

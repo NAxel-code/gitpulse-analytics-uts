@@ -20,6 +20,22 @@ import uuid
 
 router = APIRouter(prefix="/github", tags=["GitHub Analytics"])
 
+_syncing_repos = set()
+
+def ensure_repo_data(repo: str, days: int = 14):
+    """Automatically ensures repository developer events exist in database on demand."""
+    if not repo:
+        return
+    repo_clean = repo.strip().lower()
+    storage = get_storage()
+    if not storage.has_repo_events(repo_clean):
+        if repo_clean not in _syncing_repos:
+            _syncing_repos.add(repo_clean)
+            try:
+                github_syncer.sync_repository(repo_name=repo_clean, days=days)
+            finally:
+                _syncing_repos.discard(repo_clean)
+
 @router.post("/sync", response_model=GitHubSyncResponse)
 async def sync_repository(payload: GitHubSyncRequest):
     """Syncs live repository data from GitHub REST API or populates high-fidelity developer events."""
@@ -70,14 +86,6 @@ async def github_webhook(
     storage = get_storage()
     storage.insert_events([event_data])
     return {"status": "accepted", "event_type": event_type, "repo": repo_name}
-
-def ensure_repo_data(repo: str, days: int = 14):
-    """Automatically ensures repository developer events exist in database on demand."""
-    if not repo:
-        return
-    storage = get_storage()
-    if not storage.has_repo_events(repo):
-        github_syncer.sync_repository(repo_name=repo, days=days)
 
 @router.get("/overview", response_model=RepoKPISummary)
 async def get_overview(

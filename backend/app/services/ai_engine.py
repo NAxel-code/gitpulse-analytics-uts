@@ -69,6 +69,47 @@ class AIEngine:
                 }
             }
 
+        # 1b. Common repository shorthand lookup
+        COMMON_REPO_MAP = {
+            'react': 'facebook/react',
+            'next': 'vercel/next.js',
+            'nextjs': 'vercel/next.js',
+            'vue': 'vuejs/core',
+            'angular': 'angular/angular',
+            'bun': 'oven-sh/bun',
+            'uv': 'astral-sh/uv',
+            'ollama': 'ollama/ollama',
+            'linux': 'torvalds/linux',
+            'tailwind': 'tailwindlabs/tailwindcss',
+            'tailwindcss': 'tailwindlabs/tailwindcss',
+            'transformers': 'huggingface/transformers',
+            'pytorch': 'pytorch/pytorch',
+            'flutter': 'flutter/flutter',
+            'kubernetes': 'kubernetes/kubernetes',
+            'k8s': 'kubernetes/kubernetes',
+            'rust': 'rust-lang/rust',
+            'tauri': 'tauri-apps/tauri',
+            'langchain': 'langchain-ai/langchain',
+            'shadcn': 'shadcn-ui/ui',
+            'gitpulse': 'naxel-code/gitpulse-analytics',
+        }
+        q_lower = q.lower()
+        if q_lower in COMMON_REPO_MAP:
+            target_repo = COMMON_REPO_MAP[q_lower]
+            return {
+                'generated_sql': f'-- COMMAND: SWITCH REPO TO {target_repo}',
+                'summary': f"Repository recognized: Switch target repository to '{target_repo}'.",
+                'chart_type': 'command_action',
+                'chart_data': [],
+                'confidence': 1.0,
+                'execution_time_ms': 1,
+                'action': {
+                    'type': 'switch_repo',
+                    'target': target_repo,
+                    'label': f'Switch to {target_repo}'
+                }
+            }
+
         # 2. Command Palette: Switch repo shortcut or direct "owner/repo" input
         switch_match = re.match(r'^(?:(?:switch|ganti|pindah|analisis)(?:\s+repo)?\s+)?([a-zA-Z0-9_\-\.]+\/[a-zA-Z0-9_\-\.]+)$', q, re.IGNORECASE)
         if not switch_match:

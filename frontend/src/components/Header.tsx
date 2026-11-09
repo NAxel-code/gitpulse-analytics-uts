@@ -163,13 +163,28 @@ export function Header({
       .trim()
       .replace(/^https?:\/\/github\.com\//i, "")
       .replace(/\/$/, "");
-    if (!trimmed.includes("/") || trimmed.split("/").length !== 2) {
+    const COMMON_SHORTCUTS: Record<string, string> = {
+      react: "facebook/react",
+      next: "vercel/next.js",
+      nextjs: "vercel/next.js",
+      vue: "vuejs/core",
+      bun: "oven-sh/bun",
+      uv: "astral-sh/uv",
+      ollama: "ollama/ollama",
+      linux: "torvalds/linux",
+      tailwind: "tailwindlabs/tailwindcss",
+      kubernetes: "kubernetes/kubernetes",
+      gitpulse: "NAxel-code/gitpulse-analytics",
+    };
+    const targetRepo = COMMON_SHORTCUTS[trimmed.toLowerCase()] || trimmed;
+
+    if (!targetRepo.includes("/") || targetRepo.split("/").length !== 2) {
       setRepoError("Repository format must be: owner/repo-name (e.g. NAxel-code/gitpulse-analytics)");
       return;
     }
     setRepoError("");
-    setRepoInput(trimmed);
-    onRepoChange(trimmed);
+    setRepoInput(targetRepo);
+    onRepoChange(targetRepo);
     setShowRepoModal(false);
     setCustomRepo("");
   };

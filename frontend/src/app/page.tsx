@@ -128,7 +128,7 @@ export default function GitPulseDashboard() {
         fetch(`${GITHUB_API_URL}/executive-summary?repo=${encodeURIComponent(targetRepo)}`).then((r) => r.json()),
       ]);
 
-      // Use authentic real API responses directly from DuckDB & GitHub
+      // Use authentic real API responses directly from PostgreSQL & GitHub
       if (Array.isArray(timelineRes)) {
         setTimelineData(timelineRes);
       }
@@ -236,7 +236,7 @@ export default function GitPulseDashboard() {
             </h1>
           </div>
           <div className="flex items-center gap-3 text-xs font-mono text-zinc-500">
-            <span>DuckDB Columnar</span>
+            <span>PostgreSQL 16 Engine</span>
             <span className="text-zinc-700">/</span>
             <span>Sub-second AST</span>
             <span className="text-zinc-700">/</span>
@@ -312,7 +312,7 @@ export default function GitPulseDashboard() {
             <GitPulseLogo size={20} />
             <span className="text-white font-bold font-mono">GITPULSE</span>
             <span className="text-zinc-700">/</span>
-            <span>DuckDB Embedded Storage</span>
+            <span>PostgreSQL Persistent Storage</span>
             <span className="text-zinc-700">/</span>
             <span>AST Query Sandbox</span>
           </div>
@@ -384,3 +384,4 @@ export default function GitPulseDashboard() {
     </div>
   );
 }
+

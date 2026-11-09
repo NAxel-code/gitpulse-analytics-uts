@@ -394,7 +394,7 @@ LEADERBOARD_REPOSITORIES: List[Dict[str, Any]] = [
         "repo_name": "NAxel-code/gitpulse-analytics",
         "category": "ai",
         "category_label": "Developer Intelligence & Analytics",
-        "description": "High-Throughput GitHub Engineering Intelligence & DORA Metrics Engine dengan DuckDB dan Hybrid AI.",
+        "description": "High-Throughput GitHub Engineering Intelligence & DORA Metrics Engine dengan PostgreSQL dan Hybrid AI.",
         "stars": 1,
         "stars_formatted": "1",
         "forks": 0,

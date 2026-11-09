@@ -11,7 +11,7 @@ class GitHubSyncer:
     def sync_repository(self, repo_name: str, days: int = 14, token: Optional[str] = None) -> int:
         """
         Syncs authentic, real-world GitHub repository events (commits, PRs, issues, stars, contributors)
-        directly from the official GitHub REST API into DuckDB.
+        directly from the official GitHub REST API into database.
         Purges any previously simulated/stale data for this repository to ensure strict data integrity.
         """
         repo_clean = repo_name.strip().lower()
@@ -196,7 +196,7 @@ class GitHubSyncer:
                 logger.info(f"Successfully recorded {len(real_events)} authentic GitHub events for {repo_clean}")
                 return len(real_events)
             except Exception as e:
-                logger.error(f"Failed to persist real events into DuckDB: {e}")
+                logger.error(f"Failed to persist real events into database: {e}")
 
         return len(real_events)
 

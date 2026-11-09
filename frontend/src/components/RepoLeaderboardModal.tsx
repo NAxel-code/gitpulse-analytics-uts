@@ -350,7 +350,7 @@ const FALLBACK_LEADERBOARD: RepoLeaderboardItem[] = [
     repo_name: "NAxel-code/gitpulse-analytics",
     category: "ai",
     category_label: "Developer Intelligence & Analytics",
-    description: "High-throughput GitHub developer intelligence & DORA metrics engine with DuckDB and Hybrid AI.",
+    description: "High-throughput GitHub developer intelligence & DORA metrics engine with PostgreSQL and Hybrid AI.",
     stars: 1,
     stars_formatted: "1",
     forks: 0,
@@ -825,3 +825,4 @@ export function RepoLeaderboardModal({
     </div>
   );
 }
+

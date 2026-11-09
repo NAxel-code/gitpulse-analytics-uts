@@ -42,7 +42,7 @@ const TOUR_STEPS: TourStep[] = [
     badge: "Step 1 of 5",
     title: "Select Repository & Live Sync",
     description:
-      "Type any public GitHub repository name (format: 'owner/repo', e.g. 'vercel/next.js') or use quick presets. Click 'Sync Live Repo' to ingest the latest commits & PRs into DuckDB columnar storage.",
+      "Type any public GitHub repository name (format: 'owner/repo', e.g. 'vercel/next.js') or use quick presets. Click 'Sync Live Repo' to ingest the latest commits & PRs into PostgreSQL persistent storage.",
     hint: "💡 Set a free GitHub Personal Access Token (PAT) via 'Set PAT' to increase your quota from 60 to 5,000 req/hr.",
   },
   {
@@ -50,7 +50,7 @@ const TOUR_STEPS: TourStep[] = [
     badge: "Step 2 of 5",
     title: "AI Natural Language Search",
     description:
-      "Press ⌘K or Ctrl+K to ask engineering questions in plain English. The AI translates inquiries into high-speed, read-only AST-sanitized DuckDB SQL queries.",
+      "Press ⌘K or Ctrl+K to ask engineering questions in plain English. The AI translates inquiries into high-speed, read-only AST-sanitized PostgreSQL SQL queries.",
     hint: "💡 Type '@username' (e.g., '@sokra') to inspect a contributor profile card, or type 'sync' for instant synchronization.",
   },
   {
@@ -236,7 +236,7 @@ export function HelpTourModal({
                 Welcome to GitPulse Telemetry
               </h4>
               <p className="mt-1 text-xs text-zinc-400 leading-relaxed font-sans">
-                Take a 1-minute guided tour to explore DORA engineering metrics, DuckDB query console, and contributor velocity.
+                Take a 1-minute guided tour to explore DORA engineering metrics, PostgreSQL query console, and contributor velocity.
               </p>
               <div className="mt-3 flex items-center gap-2">
                 <button
@@ -639,3 +639,4 @@ export function HelpTourModal({
     </>
   );
 }
+

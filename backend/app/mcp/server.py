@@ -2,7 +2,7 @@
 
 Enables LLM agents (Claude Desktop, Cursor, Continue, etc.) to query engineering velocity,
 diagnose PR bottlenecks, extract DORA metrics, and execute sanitized analytical queries
-over GitPulse's DuckDB warehouse.
+over GitPulse's analytics warehouse.
 """
 
 from typing import Dict, Any, List, Optional
@@ -172,14 +172,14 @@ def gitpulse_get_dora_metrics(
 @mcp_server.tool(
     name="gitpulse_query_analytics",
     title="Execute Read-Only Analytical SQL",
-    description="Executes a safe, read-only SQL query on the 'github_events' DuckDB warehouse table. Validated via SQL AST sanitizer (only single SELECT allowed; DROP, DELETE, INSERT, UPDATE forbidden).",
+    description="Executes a safe, read-only SQL query on the 'github_events' analytics warehouse table. Validated via SQL AST sanitizer (only single SELECT allowed; DROP, DELETE, INSERT, UPDATE forbidden).",
     annotations=READONLY_ANNOTATIONS
 )
 def gitpulse_query_analytics(
     query: str,
     repo: str = "vercel/next.js"
 ) -> Dict[str, Any]:
-    """Executes a sanitized read-only SQL query against DuckDB.
+    """Executes a sanitized read-only SQL query against database.
 
     Table schema for 'github_events':
     - time (TIMESTAMP): Event creation time
@@ -223,7 +223,7 @@ def gitpulse_query_analytics(
         return {
             "status": "error",
             "error": str(exc),
-            "suggestion": "Periksa sintaks SQL DuckDB Anda (misal: 'SELECT actor_login, COUNT(*) as c FROM github_events GROUP BY actor_login ORDER BY c DESC LIMIT 10')."
+            "suggestion": "Periksa sintaks SQL Anda (misal: 'SELECT actor_login, COUNT(*) as c FROM github_events GROUP BY actor_login ORDER BY c DESC LIMIT 10')."
         }
 
 

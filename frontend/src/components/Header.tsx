@@ -427,7 +427,7 @@ export function Header({
                     Switch / Analyze Repository
                   </h3>
                   <p className="text-[11px] text-zinc-500 font-mono">
-                    DuckDB telemetry indexed across public repositories
+                    PostgreSQL telemetry indexed across public repositories
                   </p>
                 </div>
               </div>
@@ -618,3 +618,4 @@ export function Header({
     </>
   );
 }
+

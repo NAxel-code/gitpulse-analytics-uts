@@ -28,7 +28,7 @@ export async function POST(
       return NextResponse.json({
         query,
         generated_sql: `REFRESH MATERIALIZED VIEW repo_activity_events WHERE repo_name = '${repo}'`,
-        summary: `Command recognized: Synchronizing live GitHub event stream and columnar DuckDB cache for ${repo}.`,
+        summary: `Command recognized: Synchronizing live GitHub event stream and PostgreSQL cache for ${repo}.`,
         chart_type: "command_action",
         chart_data: [],
         confidence: 1.0,

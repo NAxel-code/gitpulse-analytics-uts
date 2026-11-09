@@ -172,7 +172,7 @@ class AIEngine:
                     }
                 }
             else:
-                # 1. Check if this developer has events in another repository in DuckDB
+                # 1. Check if this developer has events in another repository in database
                 other_repo_sql = f"""
                     SELECT repo_name, COUNT(*) as cnt
                     FROM github_events
@@ -358,7 +358,7 @@ class AIEngine:
         if self.client:
             try:
                 system_instruction = f"""
-                You are an expert GitHub analytics engineer querying a DuckDB database.
+                You are an expert GitHub analytics engineer querying an analytics database.
                 Table name is `github_events` with schema:
                 time TIMESTAMP, event_id VARCHAR, repo_name VARCHAR, event_type VARCHAR (push, pull_request, issues, watch),
                 actor_login VARCHAR, actor_avatar VARCHAR, commit_count INT, pr_status VARCHAR (opened, in_review, approved, merged),

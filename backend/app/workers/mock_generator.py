@@ -109,7 +109,7 @@ def generate_mock_data(days: int = 14, events_per_day: int = 250):
                 })
 
     storage.insert_events(events)
-    print(f"Successfully populated DuckDB with {len(events)} realistic analytics events!")
+    print(f"Successfully populated database with {len(events)} realistic analytics events!")
 
 if __name__ == "__main__":
     generate_mock_data(days=14, events_per_day=350)

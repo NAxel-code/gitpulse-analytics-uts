@@ -183,7 +183,7 @@ export function AIModal({
                 Universal Search &amp; AI Analytics
               </h3>
               <p className="text-[11px] text-zinc-500 font-mono">
-                Search global repositories, @developers, or query DuckDB AST · Active:{" "}
+                Search global repositories, @developers, or query PostgreSQL AST · Active:{" "}
                 <span className="text-zinc-300">{currentRepo}</span>
               </p>
             </div>
@@ -284,7 +284,7 @@ export function AIModal({
                 ))
               ) : !isSearchingLive ? (
                 <div className="p-3 text-center text-xs font-mono text-zinc-500">
-                  No public repositories found. Press Execute or Enter for AI DuckDB query.
+                  No public repositories found. Press Execute or Enter for AI query.
                 </div>
               ) : null}
             </div>
@@ -404,7 +404,7 @@ export function AIModal({
                   No Direct Activity Recorded
                 </span>
                 <span className="text-[11px] text-zinc-500 mt-1 block">
-                  DuckDB analytics indexed 14 days of event history for{" "}
+                  PostgreSQL analytics indexed 14 days of event history for{" "}
                   <code className="text-zinc-400">{currentRepo}</code>.
                 </span>
               </div>
@@ -505,7 +505,7 @@ export function AIModal({
                       className="flex items-center gap-2 text-xs font-mono text-zinc-300 hover:text-white transition-colors cursor-pointer select-none group"
                     >
                       <Terminal className="h-3.5 w-3.5 text-zinc-400 group-hover:text-white transition-colors" />
-                      <span className="font-medium">Sandboxed SQL (DuckDB Engine)</span>
+                      <span className="font-medium">Sandboxed SQL (PostgreSQL Engine)</span>
                       <span className="border border-white/[0.1] bg-white/[0.04] px-1.5 py-0.2 text-[10px] text-zinc-400 font-mono">
                         {showSQL ? "Hide" : "Inspect"}
                       </span>
@@ -543,3 +543,4 @@ export function AIModal({
     </div>
   );
 }
+

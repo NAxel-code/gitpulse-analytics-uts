@@ -58,8 +58,7 @@ def health_check():
         "service": "GitPulse Analytics",
         "version": "1.0.0",
         "database": {
-            "postgres": pg_health,
-            "duckdb": {"status": "ready", "engine": "embedded-columnar"}
+            "postgres": pg_health
         }
     }
 

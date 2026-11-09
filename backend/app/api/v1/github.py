@@ -72,7 +72,7 @@ async def github_webhook(
     return {"status": "accepted", "event_type": event_type, "repo": repo_name}
 
 def ensure_repo_data(repo: str, days: int = 14):
-    """Automatically ensures repository developer events exist in DuckDB on demand."""
+    """Automatically ensures repository developer events exist in database on demand."""
     if not repo:
         return
     storage = get_storage()

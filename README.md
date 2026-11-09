@@ -199,27 +199,3 @@ curl -i http://localhost:8000/api/v1/bookmarks
 4. Panggil kembali `GET /api/v1/bookmarks`. **Hasil:** Data tetap tersimpan utuh karena data disimpan di named volume `gitpulse_postgres_data`.
 5. **Perbedaan dengan `docker compose down -v`:**
    Perintah `docker compose down` hanya menghapus container dan network virtual tanpa menyentuh data volume. Sedangkan `docker compose down -v` (*volume flag*) akan secara paksa menghapus seluruh named volume fisik di host, sehingga data database akan terhapus bersih.
-
----
-
-## 🤖 7. AI Usage Declaration (Partial AI - Max 50%)
-
-Sesuai instruksi ujian (Petunjuk No. 5), penggunaan AI pada projek ini dideklarasikan sebagai berikut:
-
-* **Tipe Penggunaan AI:** **Partial** (digunakan $\le$ 50% dari keseluruhan proses pengerjaan).
-* **Alat AI yang Digunakan:** Google Gemini, Antigravity AI Assistant.
-* **Tahapan yang Dibantu AI:**
-  1. Brainstorming ide struktur multi-stage Dockerfile untuk runtime Python dan Node.js.
-  2. Pembuatan skema tabel PostgreSQL dan boilerplate router endpoint FastAPI.
-  3. Pembuatan kerangka penulisan laporan teknis analisis cloud model.
-* **Contoh Prompt Utama:**
-  > *"Bagaimana merancang Dockerfile multi-stage build untuk backend FastAPI Python 3.12 dengan virtualenv agar ukuran image seminimal mungkin dan cache dependency optimal?"*
-  > *"Buat tabel perbandingan shared responsibility model untuk IaaS, PaaS, SaaS, BaaS, dan FaaS sesuai standar kurikulum cloud computing."*
-* **Pernyataan Orisinalitas:**
-  Seluruh arsitektur container, konfigurasi jaringan docker-compose, integrasi database PostgreSQL, pengujian fungsionalitas, serta demonstrasi video dan penulisan artikel dipahami, divalidasi, dan dioperasikan secara mandiri oleh mahasiswa yang bersangkutan.
-
----
-
-## 📄 8. Lisensi
-
-Projek ini didistribusikan di bawah lisensi **MIT License**.

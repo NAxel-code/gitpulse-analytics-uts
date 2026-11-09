@@ -1,0 +1,130 @@
+# =====================================================================
+# GitPulse Analytics - Multi-Tier Container Architecture
+# COMP6991031 Cloud Services - BINUS University
+# Stack: Frontend (Next.js) + Backend (FastAPI) + Database (PostgreSQL)
+# =====================================================================
+
+services:
+  # -------------------------------------------------------------------
+  # Tier 3: Database Service (PostgreSQL 16 Alpine)
+  # -------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: gitpulse-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-gitpulse}
+      POSTGRES_USER: ${POSTGRES_USER:-gitpulse_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gitpulse_pass}
+    ports:
+      - "5432:5432"
+    volumes:
+      # Named volume ensures data persistence across container restarts
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-gitpulse_user} -d ${POSTGRES_DB:-gitpulse}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    networks:
+      - gitpulse-network
+
+  # -------------------------------------------------------------------
+  # Tier 2: Backend REST API Service (FastAPI + Python 3.12)
+  # -------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gitpulse-backend
+    restart: unless-stopped
+    environment:
+      - ENV=production
+      - PYTHONUNBUFFERED=1
+      # Connects to database via service name 'postgres' (not localhost or IP)
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-gitpulse}
+      - POSTGRES_USER=${POSTGRES_USER:-gitpulse_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-gitpulse_pass}
+      - DUCKDB_PATH=/app/data/omnipulse.duckdb
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+    ports:
+      - "8000:8000"
+    volumes:
+      - backend_data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - gitpulse-network
+
+  # -------------------------------------------------------------------
+  # Tier 1: Frontend Client Service (Next.js 15 App Router)
+  # -------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: gitpulse-frontend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - BACKEND_INTERNAL_URL=http://backend:8000
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:3000/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - gitpulse-network
+
+  # -------------------------------------------------------------------
+  # Auxiliary Tool: Database Web Admin (Adminer - Profile: tools)
+  # Soal 2c: Dijalankan via 'docker compose --profile tools up -d'
+  # -------------------------------------------------------------------
+  adminer:
+    image: adminer:4-standalone
+    container_name: gitpulse-adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    profiles:
+      - tools
+    networks:
+      - gitpulse-network
+
+# ---------------------------------------------------------------------
+# Named Volumes (Memenuhi Persyaratan Uji Persistensi Soal 2c & 2d)
+# ---------------------------------------------------------------------
+volumes:
+  postgres_data:
+    name: gitpulse_postgres_data
+  backend_data:
+    name: gitpulse_backend_data
+
+# ---------------------------------------------------------------------
+# User-Defined Network (Memenuhi Soal 2c butir 2)
+# ---------------------------------------------------------------------
+networks:
+  gitpulse-network:
+    name: gitpulse-network
+    driver: bridge

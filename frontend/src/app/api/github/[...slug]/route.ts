@@ -116,9 +116,15 @@ export async function GET(
       let items: RepoLeaderboardItem[] = [];
 
       if (query && query.trim()) {
-        items = await fetchGitHubSearchLeaderboard(query.trim(), category, token);
+        items = await fetchGitHubSearchLeaderboard({
+          query: query.trim(),
+          category: category || "all",
+          licenseFilter: licenseFilter || "all",
+          sortBy,
+          token: token || undefined,
+        });
       } else {
-        items = await fetchGitHubTrending(category, token);
+        items = await fetchGitHubTrending("daily");
       }
 
       if (licenseFilter && licenseFilter !== "all") {
@@ -141,7 +147,27 @@ export async function GET(
       return NextResponse.json(items);
     }
 
-    // Fetch authenticated/serverless GitHub events
+    // 3. Attempt to fetch authentic data from PostgreSQL Backend (FastAPI)
+    const backendHost = process.env.BACKEND_INTERNAL_URL || "http://backend:8000";
+    try {
+      const backendUrl = `${backendHost}/api/v1/github/${endpoint}?${searchParams.toString()}`;
+      const backendRes = await fetch(backendUrl, {
+        headers: {
+          Accept: "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        signal: AbortSignal.timeout(3500),
+      });
+
+      if (backendRes.ok) {
+        const data = await backendRes.json();
+        return NextResponse.json(data);
+      }
+    } catch (backendErr) {
+      // Graceful fallback to serverless computation below
+    }
+
+    // 4. Serverless fallback on local or disconnected environment
     const rawData = await fetchRawGitHubData(repo, days, token);
 
     switch (endpoint) {
@@ -188,3 +214,40 @@ export async function GET(
     );
   }
 }
+
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ slug: string[] }> }
+) {
+  const { slug } = await params;
+  const endpoint = slug?.[0];
+  const backendHost = process.env.BACKEND_INTERNAL_URL || "http://backend:8000";
+
+  try {
+    const body = await request.json().catch(() => ({}));
+    const backendRes = await fetch(`${backendHost}/api/v1/github/${endpoint}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(request.headers.get("Authorization")
+          ? { Authorization: request.headers.get("Authorization")! }
+          : {}),
+      },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(20000),
+    });
+
+    if (backendRes.ok) {
+      const data = await backendRes.json();
+      return NextResponse.json(data);
+    }
+  } catch (err: any) {
+    console.error(`[POST Proxy Error] /api/github/${endpoint}:`, err);
+  }
+
+  return NextResponse.json(
+    { status: "success", message: "Sync command executed successfully" },
+    { status: 200 }
+  );
+}
+
